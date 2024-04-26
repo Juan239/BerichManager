@@ -6,6 +6,7 @@ import sesionRoutes from "./routes/sesion.routes.js";
 import credencialesRoutes from "./routes/credenciales.routes.js"
 import categoriasRoutes from "./routes/categorias.routes.js"
 import pdfRoutes from "./routes/pdf.routes.js"
+import graficosRoutes from "./routes/graficos.routes.js"
 import cors from "cors";
 import cookieParser from 'cookie-parser';
 
@@ -29,6 +30,7 @@ app.use('/api', sesionRoutes)
 app.use('/api', credencialesRoutes)
 app.use('/api', categoriasRoutes)
 app.use('/api', pdfRoutes)
+app.use('/api', graficosRoutes)
 
 
 console.log('Escuchando puerto 3000');

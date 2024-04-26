@@ -13,46 +13,118 @@ export const generarPDF = async (req, res) => {
     month: "2-digit",
     year: "numeric",
   });
-  const titulo = rows[0].titulo;
   const responsable = rows[0].nombre;
   const establecimiento = rows[0].establecimiento;
   const intervencion = rows[0].intervencion;
   const descripcion = rows[0].descripcion;
   const observaciones = rows[0].observaciones;
 
-  const doc = new PDFDocument({ size: 'letter', margin: 50 });
+  // Crear un documento PDF en tamaño carta y ajustando los margenes a 50
+  const doc = new PDFDocument({ size: "letter", margin: 50 });
 
-  // Agrega un título al documento
-  doc.fontSize(20).text(`Orden de Trabajo N°${numeroFolio}`, { align: 'center' });
+  // Agregar logo
+  doc.image("./src/images/logoMunicipalidad.jpeg", 50, 30, { width: 50 });
 
-  // Agrega una línea divisoria
-  doc.moveDown().lineWidth(1).strokeColor('#000').moveDown();
+  // Agregar la fecha
+  doc.text(`${fecha}`, { align: "right" });
+  doc.moveDown();
 
-  // Agrega el contenido del PDF
+  // Agregar el titulo al documento
+  doc
+    .fontSize(20)
+    .text(`Orden de Trabajo N°${numeroFolio}`, { align: "center" });
+
+  //Linea debajo del titulo
+  doc
+    .strokeColor("#000000")
+    .lineWidth(1)
+    .moveTo(50, 115)
+    .lineTo(560, 115)
+    .strokeOpacity(1)
+    .stroke();
+
+  doc.moveDown();
+  // Agregar el contenido del PDF
   doc.fontSize(12);
+  //Nombre del establecimiento
+  doc.font("Helvetica-Bold").text(`${establecimiento}`);
+  doc.font("Helvetica");
   doc.moveDown();
-  doc.text(`Fecha: ${fecha}`);
-  doc.moveDown();
-  doc.text(`Título: ${titulo}`);
-  doc.moveDown();
+  //Nombre del responsable de la orden
   doc.text(`Responsable: ${responsable}`);
-  doc.moveDown();
-  doc.text(`Establecimiento: ${establecimiento}`);
-  doc.moveDown();
+  //Nombre de la intervencion
+  const intervencionLineY = doc.y + 18;
   doc.text(`Intervención: ${intervencion}`);
+  // Dibujar la línea debajo de la intervención
+  doc
+    .strokeColor("#212121")
+    .lineWidth(0.5)
+    .moveTo(50, intervencionLineY)
+    .lineTo(560, intervencionLineY)
+    .strokeOpacity(0.5)
+    .stroke();
   doc.moveDown();
-  doc.text(`Descripción: ${descripcion}`);
+  //Descripcion de la orden
+  doc.font("Helvetica-Bold").text(`Descripción`);
+  doc.font("Helvetica");
+  const descY = doc.y;
+  doc.text(`${descripcion}`, { align: "justify" });
+  // Calcula y dibuja la línea debajo de la descripción
+  const descLineY = descY + doc.heightOfString(descripcion) + 5;
+  doc
+    .strokeColor("#212121")
+    .lineWidth(0.5)
+    .moveTo(50, descLineY)
+    .lineTo(560, descLineY)
+    .strokeOpacity(0.5)
+    .stroke();
   doc.moveDown();
-  doc.text(`Observaciones: ${observaciones}`);
+  //Observaciones de la orden
+  doc.font("Helvetica-Bold").text(`Observaciones`);
+  doc.font("Helvetica");
+  doc.text(`${observaciones}`, { align: "justify" });
+
+  //Lineas de las firmas
+  doc
+    .strokeColor("#000000")
+    .lineWidth(2)
+    .moveTo(60, doc.page.height - 110)
+    .lineTo(210, doc.page.height - 110)
+    .strokeOpacity(1)
+    .stroke();
+
+  doc
+    .strokeColor("#000000")
+    .lineWidth(2)
+    .moveTo(340, doc.page.height - 110)
+    .lineTo(570, doc.page.height - 110)
+    .stroke();
+
+  // Agregar el texto "Firma" en una posición fija
+  const firmaY = doc.page.height - 100;
+  doc.text("Firma emisor", 100, firmaY);
+  doc.text("Firma responsable establecimiento", 350, firmaY, {
+    align: "center",
+  });
+
+
+  // Nombre del archivo PDF
+  const pdfName = `Orden_Trabajo_${numeroFolio}.pdf`;
+  // Establecer el encabezado Content-Disposition
+
+
 
   // Crea un buffer para almacenar los datos del PDF
   let pdfBuffer = Buffer.from([]);
-  doc.on("data", chunk => {
+  doc.on("data", (chunk) => {
     pdfBuffer = Buffer.concat([pdfBuffer, chunk]);
   });
   doc.on("end", () => {
     // Envía el PDF al frontend como respuesta
-    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", `attachment; filename="${pdfName}"`);
+    res.setHeader('Access-Control-Expose-Headers', 'Content-Disposition');
+
     res.send(pdfBuffer);
   });
 
