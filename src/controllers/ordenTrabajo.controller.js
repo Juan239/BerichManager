@@ -47,14 +47,14 @@ export const eliminarOrdenTrabajo = async (req, res) => {
 
 export const actualizarOrdentrabajo = async (req, res) => {
   const id = req.params.id;
-  const [
+  const {
     fecha,
     titulo,
     descripcion,
     observaciones,
     establecimiento,
     intervencion,
-  ] = req.body;
+  } = req.body;
 
   const [result] = await pool.query(
     "UPDATE daem_ordenesTrabajo SET ot_fecha = ?, ot_titulo = ?, ot_descripcion = ?, ot_observaciones = ?, ot_establecimiento = ?, ot_intervencion = ? WHERE ot_id = ?",
