@@ -43,6 +43,40 @@ export const eliminarOrdenTrabajo = async (req, res) => {
       message: "Orden de trabajo no eliminada",
     });
   else return res.sendStatus(204);
-
-  //Falta metodo de actualizar
 };
+
+export const actualizarOrdentrabajo = async (req, res) => {
+  const id = req.params.id;
+  const [
+    fecha,
+    titulo,
+    descripcion,
+    observaciones,
+    establecimiento,
+    intervencion,
+  ] = req.body;
+
+  const [result] = await pool.query(
+    "UPDATE daem_ordenesTrabajo SET ot_fecha = ?, ot_titulo = ?, ot_descripcion = ?, ot_observaciones = ?, ot_establecimiento = ?, ot_intervencion = ? WHERE ot_id = ?",
+    [
+      fecha,
+      titulo,
+      descripcion,
+      observaciones,
+      establecimiento,
+      intervencion,
+      id,
+    ]
+  );
+  if (result.affectedRows === 0)
+    return res.status(404).json({ message: "Orden no encontrado" });
+  else {
+    return res.status(200).json({ message: "Orden editada correctamente" });
+  }
+};
+
+export const obtenerOrdenPorId = async (req, res) => {
+  const id = req.params.id;
+  const [result] = await pool.query("SELECT * FROM daem_ordenesTrabajo WHERE ot_id = ?", id)
+  res.json(result);
+}

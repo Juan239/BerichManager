@@ -7,7 +7,7 @@ import {
   obtenerUsuario,
 } from "../controllers/usuarios.controller.js";
 import {validarToken} from "../middleware/verificarToken.middleware.js"
-import { validarRol } from "../middleware/verificarRol.middleware.js";
+//import { validarRol } from "../middleware/verificarRol.middleware.js";
 
 const router = Router();
 
@@ -17,7 +17,7 @@ router.get("/usuarios/:id", validarToken, obtenerUsuario);
 
 router.post("/usuarios", validarToken, crearUsuarios);
 
-router.put("/usuarios", validarToken, actualizarUsuarios);
+router.put("/usuarios/:id", validarToken, actualizarUsuarios);
 
 router.delete("/usuarios/:id", validarToken, eliminarUsuario);
 
