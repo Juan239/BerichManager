@@ -56,7 +56,7 @@ export const verificarUsuario = async (req, res) => {
     console.error("Error al ejecutar la consulta SQL:", error);
     res
       .status(500)
-      .json({ success: false, error: "Error interno del servidor" });
+      .json({ success: false, message: "Error interno del servidor" });
   }
 };
 

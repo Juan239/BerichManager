@@ -19,7 +19,15 @@ export const obtenerUsuario = async (req, res) => {
 };
 
 export const crearUsuarios = async (req, res) => {
-  const { username, password, nombre, apellido } = req.body;
+  const { username, password, nombre, apellido} = req.body;
+  let rol = req.body.rol;
+
+  if(rol === true){
+    rol = 'admin'
+  }
+  else{
+    rol = 'normal'
+  }
 
   try {
     // Hashea la contraseña
@@ -27,8 +35,8 @@ export const crearUsuarios = async (req, res) => {
 
     // Inserta el usuario en la base de datos con la contraseña hasheada
     const [rows] = await pool.query(
-      "INSERT INTO daem_usuarios(usr_username, usr_contrasena, usr_nombre, usr_apellido) VALUES(?,?,?,?)",
-      [username, hashedPassword, nombre, apellido]
+      "INSERT INTO daem_usuarios(usr_username, usr_contrasena, usr_nombre, usr_apellido, usr_rol) VALUES(?,?,?,?,?)",
+      [username, hashedPassword, nombre, apellido, rol]
     );
 
     res.send({
@@ -61,8 +69,14 @@ export const actualizarUsuarios = async (req, res) => {
   const id = req.params.id;
   const { username, password, nombre, apellido } = req.body;
   const hashedPassword = await bcrypt.hash(password, 10);
-  const rol = "normal";
+  let rol = req.body.rol;
   let result;
+  if(rol === true){
+    rol = 'admin'
+  }
+  else{
+    rol = 'normal'
+  }
 
   if (password === "") {
     result = await pool.query(
