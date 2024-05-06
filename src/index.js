@@ -9,6 +9,8 @@ import pdfRoutes from "./routes/pdf.routes.js"
 import graficosRoutes from "./routes/graficos.routes.js"
 import bajaEquiposRoutes from "./routes/bajaEquipos.routes.js";
 import tipoActivosRoutes from "./routes/tipoActivos.routes.js";
+import areasRoutes from "./routes/areas.routes.js";
+import marcasRoutes from "./routes/marcas.routes.js";
 import cors from "cors";
 import cookieParser from 'cookie-parser';
 
@@ -35,6 +37,8 @@ app.use('/api', pdfRoutes)
 app.use('/api', graficosRoutes)
 app.use('/api', bajaEquiposRoutes);
 app.use('/api', tipoActivosRoutes);
+app.use('/api', areasRoutes);
+app.use('/api', marcasRoutes);
 
 
 console.log('Escuchando puerto 3000');

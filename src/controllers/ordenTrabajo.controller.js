@@ -2,7 +2,7 @@ import { pool } from "../db.js";
 
 export const obtenerOrdenTrabajo = async (req, res) => {
   const [result] = await pool.query(
-    'SELECT ot_id, daem_ordenesTrabajo.ot_fecha AS "fecha", daem_categorias.cat_nombre AS "titulo", CONCAT(daem_usuarios.usr_nombre, " ", daem_usuarios.usr_apellido) AS "nombre", daem_establecimientos.est_nombre AS "establecimiento" , daem_intervenciones.int_nombre AS "intervencion" FROM daem_ordenesTrabajo INNER JOIN daem_usuarios ON daem_ordenesTrabajo.ot_responsable = daem_usuarios.usr_id INNER JOIN daem_establecimientos ON daem_ordenesTrabajo.ot_establecimiento = daem_establecimientos.est_id INNER JOIN daem_intervenciones ON daem_ordenesTrabajo.ot_intervencion = daem_intervenciones.int_id INNER JOIN daem_categorias ON daem_ordenestrabajo.ot_titulo = daem_categorias.cat_id ORDER BY ot_id DESC;'
+    'SELECT ot_id, daem_ordenestrabajo.ot_fecha AS "fecha", daem_categorias.cat_nombre AS "titulo", CONCAT(daem_usuarios.usr_nombre, " ", daem_usuarios.usr_apellido) AS "nombre", daem_establecimientos.est_nombre AS "establecimiento" , daem_intervenciones.int_nombre AS "intervencion" FROM daem_ordenestrabajo INNER JOIN daem_usuarios ON daem_ordenestrabajo.ot_responsable = daem_usuarios.usr_id INNER JOIN daem_establecimientos ON daem_ordenestrabajo.ot_establecimiento = daem_establecimientos.est_id INNER JOIN daem_intervenciones ON daem_ordenestrabajo.ot_intervencion = daem_intervenciones.int_id INNER JOIN daem_categorias ON daem_ordenestrabajo.ot_titulo = daem_categorias.cat_id ORDER BY ot_id DESC;'
   );
   res.json(result);
 };
@@ -19,7 +19,7 @@ export const crearOrdenTrabajo = async (req, res) => {
   } = req.body;
 
   const [rows] = await pool.query(
-    "INSERT INTO daem_ordenesTrabajo(ot_fecha, ot_titulo, ot_descripcion, ot_observaciones, ot_responsable, ot_establecimiento, ot_intervencion)VALUES (?,?,?,?,?,?,?)",
+    "INSERT INTO daem_ordenestrabajo(ot_fecha, ot_titulo, ot_descripcion, ot_observaciones, ot_responsable, ot_establecimiento, ot_intervencion)VALUES (?,?,?,?,?,?,?)",
     [
       fecha,
       titulo,
@@ -35,7 +35,7 @@ export const crearOrdenTrabajo = async (req, res) => {
 
 export const eliminarOrdenTrabajo = async (req, res) => {
   const [result] = await pool.query(
-    "DELETE FROM daem_ordenesTrabajo WHERE ot_id = ?",
+    "DELETE FROM daem_ordenestrabajo WHERE ot_id = ?",
     req.params.id
   );
   if (result.affectedRows <= 0)
@@ -57,7 +57,7 @@ export const actualizarOrdentrabajo = async (req, res) => {
   } = req.body;
 
   const [result] = await pool.query(
-    "UPDATE daem_ordenesTrabajo SET ot_fecha = ?, ot_titulo = ?, ot_descripcion = ?, ot_observaciones = ?, ot_establecimiento = ?, ot_intervencion = ? WHERE ot_id = ?",
+    "UPDATE daem_ordenestrabajo SET ot_fecha = ?, ot_titulo = ?, ot_descripcion = ?, ot_observaciones = ?, ot_establecimiento = ?, ot_intervencion = ? WHERE ot_id = ?",
     [
       fecha,
       titulo,
@@ -77,6 +77,6 @@ export const actualizarOrdentrabajo = async (req, res) => {
 
 export const obtenerOrdenPorId = async (req, res) => {
   const id = req.params.id;
-  const [result] = await pool.query("SELECT * FROM daem_ordenesTrabajo WHERE ot_id = ?", id)
+  const [result] = await pool.query("SELECT * FROM daem_ordenestrabajo WHERE ot_id = ?", id)
   res.json(result);
 }

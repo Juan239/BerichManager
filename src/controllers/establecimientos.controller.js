@@ -25,3 +25,27 @@ export const eliminarEstablecimiento = async (req, res) => {
     });
   else return res.sendStatus(204);
 };
+
+export const obtenerEstablecimientoPorId = async (req, res) => {
+  const [result] = await pool.query(
+    "SELECT * FROM daem_establecimientos WHERE est_id = ?",
+    req.params.id
+  );
+  if (result.length <= 0)
+    return res.status(404).json({
+      message: "Establecimiento no encontrado",
+    });
+  else return res.json(result[0]);
+};
+
+export const actualizarEstablecimiento = async (req, res) => {
+  const [result] = await pool.query(
+    "UPDATE daem_establecimientos SET est_nombre = ? WHERE est_id = ?",
+    [req.body.nombre, req.params.id]
+  );
+  if (result.affectedRows <= 0)
+    return res.status(404).json({
+      message: "Establecimiento no actualizado",
+    });
+  else return res.sendStatus(204);
+};
