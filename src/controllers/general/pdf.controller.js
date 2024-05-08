@@ -1,4 +1,4 @@
-import { pool } from "../db.js";
+import { pool } from "../../db.js";
 import PDFDocument from "pdfkit";
 
 export const generarPDFordenTrabajo = async (req, res) => {

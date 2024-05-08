@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { ordenesPorEstablecimientoMes, ordenesTrabajoTotal, ordenesTotalesPorMes } from "../controllers/graficos.controller.js";
+import { ordenesPorEstablecimientoMes, ordenesTrabajoTotal, ordenesTotalesPorMes } from "../controllers/ordenesTrabajo/graficos.controller.js";
 
 const router = Router()
 

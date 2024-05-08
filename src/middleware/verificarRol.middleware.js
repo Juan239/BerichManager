@@ -17,8 +17,8 @@ export function validarRol(req, res, next) {
       req.user = decoded;
 
       // Verificar el rol del usuario
-      const usrRol = decoded.userRol;
-      if (usrRol === "normal") {
+      const usrRol = decoded.userRolInformatica;
+      if (usrRol === "usuario") {
         console.log("USUARIO NORMAL")
         return res.status(200).json({ rol: "usuario" });
       } else if (usrRol === "admin") {
@@ -28,6 +28,7 @@ export function validarRol(req, res, next) {
         next();
       } else {
         console.log("No se encuentra el rol");
+        console.log("asdasd");
         return res.status(403).json({ message: "Rol de usuario no válido." });
       }
 

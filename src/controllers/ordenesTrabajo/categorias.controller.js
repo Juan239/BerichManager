@@ -1,4 +1,4 @@
-import { pool } from "../db.js";
+import { pool } from "../../db.js";
 
 export const obtenerCategorias = async(req, res) => {
     const [result] = await pool.query("SELECT * FROM daem_categorias")

@@ -1,4 +1,4 @@
-import { pool } from "../db.js";
+import { pool } from "../../db.js";
 import bcrypt from "bcryptjs";
 
 export const obtenerUsuarios = async (req, res) => {
@@ -8,7 +8,7 @@ export const obtenerUsuarios = async (req, res) => {
 
 export const obtenerUsuario = async (req, res) => {
   const [rows] = await pool.query(
-    "SELECT usr_id, usr_username as username, usr_nombre as nombre, usr_apellido as apellido, usr_rol as rol FROM daem_usuarios WHERE usr_id = ?",
+    "SELECT usr_id, usr_username as username, usr_nombre as nombre, usr_apellido as apellido, usr_rol_informatica as rol_informatica, usr_rol_bitacoras as rol_bitacoras FROM daem_usuarios WHERE usr_id = ?",
     req.params.id
   );
   if (rows.length <= 0)
@@ -20,13 +20,21 @@ export const obtenerUsuario = async (req, res) => {
 
 export const crearUsuarios = async (req, res) => {
   const { username, password, nombre, apellido} = req.body;
-  let rol = req.body.rol;
+  let rolInformatica = req.body.rolInformatica;
+  let rolBitacoras = req.body.rolBitacoras;
 
-  if(rol === true){
-    rol = 'admin'
+  if(rolInformatica === true){
+    rolInformatica = 'admin'
   }
   else{
-    rol = 'normal'
+    rolInformatica = 'usuario'
+  }
+
+  if(rolBitacoras === true){
+    rolBitacoras = 'admin'
+  }
+  else{
+    rolBitacoras = 'usuario'
   }
 
   try {
@@ -35,8 +43,8 @@ export const crearUsuarios = async (req, res) => {
 
     // Inserta el usuario en la base de datos con la contraseña hasheada
     const [rows] = await pool.query(
-      "INSERT INTO daem_usuarios(usr_username, usr_contrasena, usr_nombre, usr_apellido, usr_rol) VALUES(?,?,?,?,?)",
-      [username, hashedPassword, nombre, apellido, rol]
+      "INSERT INTO daem_usuarios(usr_username, usr_contrasena, usr_nombre, usr_apellido, usr_rol_informatica, usr_rol_bitacoras) VALUES(?,?,?,?,?,?)",
+      [username, hashedPassword, nombre, apellido, rolInformatica, rolBitacoras]
     );
 
     res.send({
@@ -69,24 +77,36 @@ export const actualizarUsuarios = async (req, res) => {
   const id = req.params.id;
   const { username, password, nombre, apellido } = req.body;
   const hashedPassword = await bcrypt.hash(password, 10);
-  let rol = req.body.rol;
   let result;
-  if(rol === true){
-    rol = 'admin'
+  let rolInformatica = req.body.rolInformatica;
+  let rolBitacoras = req.body.rolBitacoras;
+
+  if(rolInformatica === true){
+    rolInformatica = 'admin'
   }
   else{
-    rol = 'normal'
+    rolInformatica = 'usuario'
   }
 
+  if(rolBitacoras === true){
+    rolBitacoras = 'admin'
+  }
+  else{
+    rolBitacoras = 'usuario'
+  }
+  console.log("Contraseña: ",password);
   if (password === "") {
+    console.log("Contraseña vacía");
     result = await pool.query(
-      "UPDATE daem_usuarios SET usr_username = ?, usr_nombre = ?, usr_apellido = ?, usr_rol = ? WHERE usr_id = ?",
-      [username, nombre, apellido, rol, id]
+      "UPDATE daem_usuarios SET usr_username = ?, usr_nombre = ?, usr_apellido = ?, usr_rol_informatica = ?, usr_rol_bitacoras = ? WHERE usr_id = ?",
+      [username, nombre, apellido, rolInformatica, rolBitacoras, id]
     );
+    console.log(result.affectedRows);
   } else {
+    console.log("Cambiando contraseña");
     result = await pool.query(
-      "UPDATE daem_usuarios SET usr_username = ?, usr_contrasena = ?, usr_nombre = ?, usr_apellido = ?, usr_rol = ? WHERE usr_id = ?",
-      [username, hashedPassword, nombre, apellido, rol, id]
+      "UPDATE daem_usuarios SET usr_username = ?, usr_contrasena = ?, usr_nombre = ?, usr_apellido = ?, usr_rol_informatica = ?, usr_rol_bitacoras = ? WHERE usr_id = ?",
+      [username, hashedPassword, nombre, apellido, rolInformatica, rolBitacoras, id]
     );
   }
 

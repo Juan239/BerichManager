@@ -17,12 +17,12 @@ export const obtenerCredenciales = async (req, res) => {
   try {
     // Decodificar el token
     const decoded = jwt.verify(token, process.env.SECRET);
-
+  
     // Extraer los datos del usuario del token decodificado
-    const { userId, username, userRol } = decoded;
+    const { userId, username, userRolInformatica, userRolBitacoras } = decoded;
 
     // Enviar los datos del usuario como respuesta
-    res.status(200).json({ userId, username, userRol });
+    res.status(200).json({ userId, username, userRolInformatica, userRolBitacoras });
   } catch (error) {
     console.error("Error al obtener las credenciales:", error);
     res

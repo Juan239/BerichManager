@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { obtenerAreas, crearAreas, eliminarArea, obtenerAreaPorId, actualizarArea } from "../controllers/areas.controller.js";
+import { obtenerAreas, crearAreas, eliminarArea, obtenerAreaPorId, actualizarArea } from "../controllers/usuarios/areas.controller.js";
 import { validarToken } from "../middleware/verificarToken.middleware.js";
 
 const router = Router();

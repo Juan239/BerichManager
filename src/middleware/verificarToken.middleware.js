@@ -15,9 +15,9 @@ export function validarToken(req, res, next) {
       // Decodificar el token y almacenar la información en el objeto req.user si es necesario
       req.user = decoded;
 
-      const usrRol = decoded.userRol;
-      if (usrRol === "normal") {
-        req.userRol = "normal"
+      const usrRol = decoded.userRolInformatica;
+      if (usrRol === "usuario") {
+        req.userRol = "usuario"
        
       } else if (usrRol === "admin") {
         //Cambie el return por el sendStatus, si hay error puede ser esto

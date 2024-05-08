@@ -5,7 +5,7 @@ import {
   actualizarUsuarios,
   eliminarUsuario,
   obtenerUsuario,
-} from "../controllers/usuarios.controller.js";
+} from "../controllers/usuarios/usuarios.controller.js";
 import {validarToken} from "../middleware/verificarToken.middleware.js"
 //import { validarRol } from "../middleware/verificarRol.middleware.js";
 

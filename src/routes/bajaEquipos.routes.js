@@ -6,7 +6,7 @@ import {
   eliminarBajaEquipos,
   actualizarBajaEquipos,
   obtenerBajaEquiposPorId
-} from "../controllers/bajaEquipos.controller.js";
+} from "../controllers/bajaEquipos/bajaEquipos.controller.js";
 
 const router = Router();
 

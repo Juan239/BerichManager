@@ -1,5 +1,5 @@
 import {Router} from "express";
-import {obtenerCredenciales} from "../controllers/obtenerCredenciales.controller.js"
+import {obtenerCredenciales} from "../controllers/general/obtenerCredenciales.controller.js"
 import { validarToken } from "../middleware/verificarToken.middleware.js";
 import { validarRol } from "../middleware/verificarRol.middleware.js";
 

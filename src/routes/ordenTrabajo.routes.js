@@ -5,7 +5,7 @@ import {
   eliminarOrdenTrabajo,
   actualizarOrdentrabajo,
   obtenerOrdenPorId
-} from "../controllers/ordenTrabajo.controller.js";
+} from "../controllers/ordenesTrabajo/ordenTrabajo.controller.js";
 import {validarToken} from "../middleware/verificarToken.middleware.js"
 
 const router = Router();

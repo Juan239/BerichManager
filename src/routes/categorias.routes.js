@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { obtenerCategorias, crearCategorias, eliminarCategoria, obtenerCategoriaPorId, actualizarCategoria } from "../controllers/categorias.controller.js";
+import { obtenerCategorias, crearCategorias, eliminarCategoria, obtenerCategoriaPorId, actualizarCategoria } from "../controllers/ordenesTrabajo/categorias.controller.js";
 import { validarToken } from "../middleware/verificarToken.middleware.js";
 
 const router = Router();

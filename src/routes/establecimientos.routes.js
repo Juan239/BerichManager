@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { obtenerEstablecimientos, crearEstablecimientos, eliminarEstablecimiento, obtenerEstablecimientoPorId, actualizarEstablecimiento } from "../controllers/establecimientos.controller.js";
+import { obtenerEstablecimientos, crearEstablecimientos, eliminarEstablecimiento, obtenerEstablecimientoPorId, actualizarEstablecimiento } from "../controllers/general/establecimientos.controller.js";
 import {validarToken} from "../middleware/verificarToken.middleware.js"
 import { validarRol } from "../middleware/verificarRol.middleware.js";
 

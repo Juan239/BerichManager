@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { obtenerMarcas, crearMarcas, eliminarMarca, obtenerMarcaPorId, actualizarMarca } from "../controllers/marcas.controller.js";
+import { obtenerMarcas, crearMarcas, eliminarMarca, obtenerMarcaPorId, actualizarMarca } from "../controllers/bajaEquipos/marcas.controller.js";
 import { validarToken } from "../middleware/verificarToken.middleware.js";
 
 const router = Router();

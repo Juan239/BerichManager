@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { generarPDFordenTrabajo, generarPDFbajaEquipos } from "../controllers/pdf.controller.js";
+import { generarPDFordenTrabajo, generarPDFbajaEquipos } from "../controllers/general/pdf.controller.js";
 import { validarToken } from "../middleware/verificarToken.middleware.js";
 
 const router = Router();

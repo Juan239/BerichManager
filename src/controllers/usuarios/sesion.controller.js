@@ -1,5 +1,5 @@
 // Importar los módulos necesarios
-import { pool } from "../db.js";
+import { pool } from "../../db.js";
 import jwt from "jsonwebtoken";
 import { config } from "dotenv";
 import bcrypt from "bcryptjs";
@@ -15,7 +15,7 @@ export const verificarUsuario = async (req, res) => {
   try { 
     // Consultar la base de datos para obtener los datos del usuario
     const [result] = await pool.query(
-      "SELECT usr_id, usr_username, usr_contrasena, usr_rol FROM daem_usuarios WHERE usr_username = ?",
+      "SELECT usr_id, usr_username, usr_contrasena, usr_rol_informatica, usr_rol_bitacoras FROM daem_usuarios WHERE usr_username = ?",
       usernameReq
     );
 
@@ -23,7 +23,8 @@ export const verificarUsuario = async (req, res) => {
     if (result.length > 0) {
       const userId = result[0].usr_id;
       const usernameDB = result[0].usr_username;
-      const userRol = result[0].usr_rol;
+      const userRolInformatica = result[0].usr_rol_informatica;
+      const userRolBitacoras = result[0].usr_rol_bitacoras;
       const hashedPassword = result[0].usr_contrasena;
 
       // Deshashear la contraseña almacenada en la base de datos
@@ -31,14 +32,15 @@ export const verificarUsuario = async (req, res) => {
 
       if (isPasswordValid) {
         // Generar el token de acceso incluyendo la ID del usuario y el nombre de usuario en el payload
-        const accessToken = generateAccessToken(userId, usernameDB, userRol);
+        const accessToken = generateAccessToken(userId, usernameDB, userRolInformatica, userRolBitacoras);
 
         // Enviar el token y el nombre de usuario en la respuesta JSON
         res.json({
           success: true,
           message: "Inicio de sesión exitoso",
           token: accessToken,
-          rol: userRol
+          rolInformatica: userRolInformatica,
+          rolBitacoras: userRolBitacoras,
         });
       } else {
         // Contraseña incorrecta
@@ -61,8 +63,8 @@ export const verificarUsuario = async (req, res) => {
 };
 
 // Función para generar el token de acceso incluyendo la ID del usuario y el nombre de usuario en el payload
-function generateAccessToken(userId, username, userRol) {
-  return jwt.sign({ userId: userId, username: username, userRol: userRol }, process.env.SECRET, {
+function generateAccessToken(userId, username, userRolInformatica, userRolBitacoras) {
+  return jwt.sign({ userId: userId, username: username, userRolInformatica: userRolInformatica, userRolBitacoras:userRolBitacoras }, process.env.SECRET, {
     expiresIn: "9h",
   });
 }

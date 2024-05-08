@@ -6,7 +6,7 @@ import {
   eliminarTipoActivos,
   actualizarTipoActivos,
   obtenerTipoActivoPorId
-} from "../controllers/tipoActivos.controller.js";
+} from "../controllers/bajaEquipos/tipoActivos.controller.js";
 
 const router = Router();
 
