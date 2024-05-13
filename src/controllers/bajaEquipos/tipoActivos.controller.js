@@ -2,7 +2,7 @@ import { pool } from "../../db.js";
 
 export const obtenerTipoActivos = async (req, res) => {
   try {
-    const [result] = await pool.query("SELECT * FROM daem_tipoActivos");
+    const [result] = await pool.query("SELECT * FROM daem_tipoactivos");
     res.json(result);
   } catch (error) {
     res
@@ -19,7 +19,7 @@ export const crearTipoActivos = async (req, res) => {
     const { nombre } = req.body;
 
     const [result] = await pool.query(
-      "INSERT INTO daem_tipoActivos (ac_nombre) VALUES (?)",
+      "INSERT INTO daem_tipoactivos (ac_nombre) VALUES (?)",
       [nombre]
     );
     res.status(200).json({ message: "Tipo de activo creado" });
@@ -36,7 +36,7 @@ export const crearTipoActivos = async (req, res) => {
 export const eliminarTipoActivos = async (req, res) => {
   try {
     const [result] = await pool.query(
-      "DELETE FROM daem_tipoActivos WHERE ac_id = ?",
+      "DELETE FROM daem_tipoactivos WHERE ac_id = ?",
       req.params.id
     );
     if (result.affectedRows <= 0)
@@ -60,7 +60,7 @@ export const actualizarTipoActivos = async (req, res) => {
     const { nombre } = req.body;
 
     const [result] = await pool.query(
-      "UPDATE daem_tipoActivos SET ac_nombre = ? WHERE ac_id = ?",
+      "UPDATE daem_tipoactivos SET ac_nombre = ? WHERE ac_id = ?",
       [nombre, id]
     );
     if (result.affectedRows <= 0)
@@ -81,7 +81,7 @@ export const actualizarTipoActivos = async (req, res) => {
 export const obtenerTipoActivoPorId = async (req, res) => {
   try {
     const [result] = await pool.query(
-      "SELECT * FROM daem_tipoActivos WHERE ac_id = ?",
+      "SELECT * FROM daem_tipoactivos WHERE ac_id = ?",
       req.params.id
     );
     if (result.length <= 0)

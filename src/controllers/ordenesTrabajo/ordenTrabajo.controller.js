@@ -8,27 +8,11 @@ export const obtenerOrdenTrabajo = async (req, res) => {
 };
 
 export const crearOrdenTrabajo = async (req, res) => {
-  const {
-    fecha,
-    titulo,
-    establecimiento,
-    intervencion,
-    descripcion,
-    observaciones,
-    responsable,
-  } = req.body;
+  const {fecha,titulo,establecimiento,intervencion,descripcion,observaciones,responsable,} = req.body;
 
   const [rows] = await pool.query(
     "INSERT INTO daem_ordenestrabajo(ot_fecha, ot_titulo, ot_descripcion, ot_observaciones, ot_responsable, ot_establecimiento, ot_intervencion)VALUES (?,?,?,?,?,?,?)",
-    [
-      fecha,
-      titulo,
-      descripcion,
-      observaciones,
-      responsable,
-      establecimiento,
-      intervencion,
-    ]
+    [fecha,titulo, descripcion,observaciones,responsable,establecimiento,intervencion,]
   );
   res.sendStatus(204);
 };
@@ -47,26 +31,11 @@ export const eliminarOrdenTrabajo = async (req, res) => {
 
 export const actualizarOrdentrabajo = async (req, res) => {
   const id = req.params.id;
-  const {
-    fecha,
-    titulo,
-    descripcion,
-    observaciones,
-    establecimiento,
-    intervencion,
-  } = req.body;
+  const {fecha,titulo,descripcion,observaciones, establecimiento,intervencion, } = req.body;
 
   const [result] = await pool.query(
     "UPDATE daem_ordenestrabajo SET ot_fecha = ?, ot_titulo = ?, ot_descripcion = ?, ot_observaciones = ?, ot_establecimiento = ?, ot_intervencion = ? WHERE ot_id = ?",
-    [
-      fecha,
-      titulo,
-      descripcion,
-      observaciones,
-      establecimiento,
-      intervencion,
-      id,
-    ]
+    [fecha,titulo,descripcion,observaciones,establecimiento,intervencion,id,]
   );
   if (result.affectedRows === 0)
     return res.status(404).json({ message: "Orden no encontrado" });

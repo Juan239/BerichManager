@@ -65,6 +65,7 @@ export const verificarUsuario = async (req, res) => {
 // Función para generar el token de acceso incluyendo la ID del usuario y el nombre de usuario en el payload
 function generateAccessToken(userId, username, userRolInformatica, userRolBitacoras) {
   return jwt.sign({ userId: userId, username: username, userRolInformatica: userRolInformatica, userRolBitacoras:userRolBitacoras }, process.env.SECRET, {
+    //Acá se puede cambiar la duracion del token, actualmente se encuentra en 9 horas
     expiresIn: "9h",
   });
 }

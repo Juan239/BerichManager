@@ -13,6 +13,7 @@ import areasRoutes from "./routes/areas.routes.js";
 import marcasRoutes from "./routes/marcas.routes.js";
 import destinosRoutes from "./routes/destinos.routes.js";
 import vehiculosRoutes from "./routes/vehiculos.routes.js";
+import bitacorasRoutes from "./routes/bitacoras.routes.js";
 import cors from "cors";
 import cookieParser from 'cookie-parser';
 
@@ -43,6 +44,7 @@ app.use('/api', areasRoutes);
 app.use('/api', marcasRoutes);
 app.use('/api', destinosRoutes);
 app.use('/api', vehiculosRoutes);
+app.use('/api', bitacorasRoutes);
 
 
 console.log('Escuchando puerto 3000');
