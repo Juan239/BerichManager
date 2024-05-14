@@ -69,3 +69,15 @@ export const ordenesTotalesPorMes = async (req, res) => {
     res.status(500).json({ error: "Error interno del servidor" });
   }
 };
+
+export const viajesTotales = async (req, res) => {
+  try {
+    const [result] = await pool.query(
+      "SELECT COUNT(bi_id) AS total FROM daem_bitacoras;"
+    );
+    res.json(result);
+  } catch (error) {
+    console.error("Error al ejecutar la consulta:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+}
