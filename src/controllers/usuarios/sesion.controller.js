@@ -33,7 +33,7 @@ export const verificarUsuario = async (req, res) => {
       if (isPasswordValid) {
         // Generar el token de acceso incluyendo la ID del usuario y el nombre de usuario en el payload
         const accessToken = generateAccessToken(userId, usernameDB, userRolInformatica, userRolBitacoras);
-
+        console.log(usernameDB + " ha iniciado sesión");
         // Enviar el token y el nombre de usuario en la respuesta JSON
         res.json({
           success: true,

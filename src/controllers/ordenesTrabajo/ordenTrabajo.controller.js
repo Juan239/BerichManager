@@ -8,11 +8,16 @@ export const obtenerOrdenTrabajo = async (req, res) => {
 };
 
 export const crearOrdenTrabajo = async (req, res) => {
-  const {fecha,titulo,establecimiento,intervencion,descripcion,observaciones,responsable,} = req.body;
+  const {fecha,titulo,establecimiento,intervencion,descripcion,observaciones,responsable} = req.body;
+  let colaborador = req.body.colaborador;
+
+  if(!colaborador){
+    colaborador = null;
+  }
 
   const [rows] = await pool.query(
-    "INSERT INTO daem_ordenestrabajo(ot_fecha, ot_titulo, ot_descripcion, ot_observaciones, ot_responsable, ot_establecimiento, ot_intervencion)VALUES (?,?,?,?,?,?,?)",
-    [fecha,titulo, descripcion,observaciones,responsable,establecimiento,intervencion,]
+    "INSERT INTO daem_ordenestrabajo(ot_fecha, ot_titulo, ot_descripcion, ot_observaciones, ot_responsable, ot_establecimiento, ot_intervencion, ot_colaborador)VALUES (?,?,?,?,?,?,?,?)",
+    [fecha,titulo, descripcion,observaciones,responsable,establecimiento,intervencion,colaborador]
   );
   res.sendStatus(204);
 };

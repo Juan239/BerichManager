@@ -7,8 +7,10 @@ import {
   obtenerUsuario,
   obtenerConductores,
   crearConductores,
-  actualizarConductores
+  actualizarConductores,
+  obtenerColaboradores
 } from "../controllers/usuarios/usuarios.controller.js";
+import { cambiarContrasena } from "../controllers/usuarios/contrasena.controller.js";
 import {validarToken} from "../middleware/verificarToken.middleware.js"
 //import { validarRol } from "../middleware/verificarRol.middleware.js";
 
@@ -29,5 +31,9 @@ router.get("/conductores", validarToken, obtenerConductores);
 router.post("/conductores", validarToken, crearConductores);
 
 router.put("/conductores/:id", validarToken, actualizarConductores);
+
+router.get("/colaboradores" , validarToken, obtenerColaboradores)
+
+router.post("/cambiarContrasena", validarToken, cambiarContrasena);
 
 export default router;

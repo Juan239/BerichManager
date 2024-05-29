@@ -5,7 +5,7 @@ export const generarPDFordenTrabajo = async (req, res) => {
 
     console.log("PDF Creado de orden de trabajo");
     const [rows] = await pool.query(
-      'SELECT ot_id, daem_ordenestrabajo.ot_fecha AS "fecha", daem_categorias.cat_nombre AS "titulo", CONCAT(daem_usuarios.usr_nombre, " ", daem_usuarios.usr_apellido) AS "nombre", daem_establecimientos.est_nombre AS "establecimiento" , daem_intervenciones.int_nombre AS "intervencion", daem_ordenestrabajo.ot_descripcion as "descripcion", daem_ordenestrabajo.ot_observaciones as "observaciones" FROM daem_ordenestrabajo INNER JOIN daem_usuarios ON daem_ordenestrabajo.ot_responsable = daem_usuarios.usr_id INNER JOIN daem_establecimientos ON daem_ordenestrabajo.ot_establecimiento = daem_establecimientos.est_id INNER JOIN daem_intervenciones ON daem_ordenestrabajo.ot_intervencion = daem_intervenciones.int_id INNER JOIN daem_categorias ON daem_ordenestrabajo.ot_titulo = daem_categorias.cat_id WHERE ot_id = ?',
+      'SELECT ot_id, daem_ordenestrabajo.ot_fecha AS "fecha", daem_categorias.cat_nombre AS "titulo", CONCAT(responsable.usr_nombre, " ", responsable.usr_apellido) AS "nombre", daem_establecimientos.est_nombre AS "establecimiento", daem_intervenciones.int_nombre AS "intervencion", daem_ordenestrabajo.ot_descripcion AS "descripcion", daem_ordenestrabajo.ot_observaciones AS "observaciones", CONCAT(colaborador.usr_nombre, " ", colaborador.usr_apellido) AS "colaborador" FROM daem_ordenestrabajo INNER JOIN daem_usuarios AS responsable ON daem_ordenestrabajo.ot_responsable = responsable.usr_id INNER JOIN daem_establecimientos ON daem_ordenestrabajo.ot_establecimiento = daem_establecimientos.est_id INNER JOIN daem_intervenciones ON daem_ordenestrabajo.ot_intervencion = daem_intervenciones.int_id INNER JOIN daem_categorias ON daem_ordenestrabajo.ot_titulo = daem_categorias.cat_id LEFT JOIN daem_usuarios AS colaborador ON daem_ordenestrabajo.ot_colaborador = colaborador.usr_id WHERE ot_id = ?;',
       req.params.id
     );
 
@@ -20,6 +20,7 @@ export const generarPDFordenTrabajo = async (req, res) => {
     const intervencion = rows[0].intervencion;
     const descripcion = rows[0].descripcion;
     const observaciones = rows[0].observaciones;
+    const colaborador = rows[0].colaborador;
 
     // Crear un documento PDF en tamaño carta y ajustando los margenes a 50
     const doc = new PDFDocument({ size: "letter", margin: 50 });
@@ -53,7 +54,12 @@ export const generarPDFordenTrabajo = async (req, res) => {
     doc.font("Helvetica");
     doc.moveDown();
     //Nombre del responsable de la orden
-    doc.text(`Responsable: ${responsable}`);
+    if(colaborador === null){
+      doc.text(`Responsable: ${responsable}`);
+    }
+    else{
+      doc.text(`Responsables: ${responsable} y ${colaborador}`);
+    }
     //Nombre de la intervencion
     const intervencionLineY = doc.y + 18;
     doc.text(`Intervención: ${intervencion}`);

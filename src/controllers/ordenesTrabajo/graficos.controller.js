@@ -70,10 +70,34 @@ export const ordenesTotalesPorMes = async (req, res) => {
   }
 };
 
+export const ordenesTotalesMesActual = async (req, res) => {
+  try {
+    const [result] = await pool.query(
+      "SELECT COUNT(ot_id) AS total FROM daem_ordenestrabajo WHERE MONTH(ot_fecha) = MONTH(CURRENT_DATE()) AND YEAR(ot_fecha) = YEAR(CURRENT_DATE());"
+    );
+    res.json(result);
+  } catch (error) {
+    console.error("Error al ejecutar la consulta:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  } 
+}
+
 export const viajesTotales = async (req, res) => {
   try {
     const [result] = await pool.query(
       "SELECT COUNT(bi_id) AS total FROM daem_bitacoras;"
+    );
+    res.json(result);
+  } catch (error) {
+    console.error("Error al ejecutar la consulta:", error);
+    res.status(500).json({ error: "Error interno del servidor" });
+  }
+}
+
+export const viajesTotalesMesActual = async (req, res) => {
+  try {
+    const [result] = await pool.query(
+      "SELECT COUNT(bi_id) AS total FROM daem_bitacoras WHERE MONTH(bi_fechasalida) = MONTH(CURRENT_DATE()) AND YEAR(bi_fechasalida) = YEAR(CURRENT_DATE());"
     );
     res.json(result);
   } catch (error) {
